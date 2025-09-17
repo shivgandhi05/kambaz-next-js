@@ -254,20 +254,20 @@ export default function Lab1() {
                     
                     <label htmlFor="wd-text-fields-salary-start">Starting salary:</label>
                     <input type="number"
-                            value="100000"
+                            defaultValue="100000"
                             placeholder="1000"
                             id="wd-text-fields-salary-start"/><br />
 
                     <label htmlFor="wd-text-fields-rating">Rating:</label>
                     <input type="range"
-                            value="4"
+                            defaultValue="4"
                             max="5"
                             placeholder="Doe"
                             id="wd-text-fields-rating"/><br />
 
                     <label htmlFor="wd-text-fields-dob">Date of birth:</label>
                     <input type="date"
-                            value="2000-01-21"
+                            defaultValue="2000-01-21"
                             id="wd-text-fields-dob"/><br />
                     
                     <h4>Anchor tag</h4>

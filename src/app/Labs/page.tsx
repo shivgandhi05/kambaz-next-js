@@ -3,7 +3,7 @@ export default function Labs() {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
-      <h2>Shiv Gandhi</h2>
+      <h2>Shiv Gandhi CS4550.11597.202610</h2>
       <ul>
         <li>
           <Link href="/Labs/Lab1" id="wd-lab1-link">
