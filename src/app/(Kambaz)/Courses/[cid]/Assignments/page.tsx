@@ -18,7 +18,7 @@ export default function Assignments() {
                     </div>
                 </li>
                 <li className="wd-assignment-list-item">
-                    <a href="/Courses/1234/Assignments/123" className="wd-assignment-link">A2 - CSS + BOOTSTRAP</a>
+                    <Link href="/Courses/1234/Assignments/123" className="wd-assignment-link">A2 - CSS + BOOTSTRAP</Link>
                     <div className="wd-assignment-sub">
                         <span>Multiple Modules</span> |{" "}
                         <span><strong>Not available until</strong> May 13 at 12:00am</span> |{" "}<br/>
@@ -27,7 +27,7 @@ export default function Assignments() {
                     </div>
                 </li>
                 <li className="wd-assignment-list-item">
-                    <a href="/Courses/1234/Assignments/123" className="wd-assignment-link">A3 - JAVASCRIPT + REACT</a>
+                    <Link href="/Courses/1234/Assignments/123" className="wd-assignment-link">A3 - JAVASCRIPT + REACT</Link>
                     <div className="wd-assignment-sub">
                         <span>Multiple Modules</span> |{" "}
                         <span><strong>Not available until</strong> May 20 at 12:00am</span> |{" "}<br/>
