@@ -8,7 +8,7 @@ export default function Dashboard () {
             <div id="wd-dashboard-courses">
                 <div className="wd-dashboard-course">
                     <Link href="/Courses/1234" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>CS1234 React JS</h5>
                         <p className="wd-dashboard-course-title">
@@ -20,7 +20,7 @@ export default function Dashboard () {
                 </div>
                <div className="wd-dashboard-course">
                     <Link href="/Courses/1500" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>CS1500 Discrete Math</h5>
                         <p className="wd-dashboard-course-title">
@@ -32,7 +32,7 @@ export default function Dashboard () {
                </div>
                <div className="wd-dashboard-course">
                     <Link href="/Courses/3033" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>CS3033 Object Oriented Design</h5>
                         <p className="wd-dashboard-course-title">
@@ -44,7 +44,7 @@ export default function Dashboard () {
                </div>
                <div className="wd-dashboard-course">
                     <Link href="/Courses/2045" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>CS2045 DSA</h5>
                         <p className="wd-dashboard-course-title">
@@ -56,7 +56,7 @@ export default function Dashboard () {
                </div>
                <div className="wd-dashboard-course">
                     <Link href="/Courses/4767" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>MUSC4767 Music Programming</h5>
                         <p className="wd-dashboard-course-title">
@@ -68,7 +68,7 @@ export default function Dashboard () {
                </div>
                <div className="wd-dashboard-course">
                     <Link href="/Courses/1011" className="wd-dashboard-course-link">
-                    <Image src="/images/reactjs.jpg" width={200} height={150} />
+                    <Image src="/images/reactjs.jpg" alt="React JS cover" width={200} height={150} />
                     <div>
                         <h5>ENG1011 First Year Writing</h5>
                         <p className="wd-dashboard-course-title">
