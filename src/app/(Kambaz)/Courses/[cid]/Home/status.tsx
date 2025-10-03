@@ -1,16 +1,46 @@
+import { MdDoNotDisturbAlt } from "react-icons/md";
+import { FaCheckCircle } from "react-icons/fa";
+import { BiImport } from "react-icons/bi";
+import { LiaFileImportSolid } from "react-icons/lia";
+import { Button } from "react-bootstrap";
+import { FaHome, FaChartBar, FaBullhorn, FaBell} from "react-icons/fa";
+
 export default function CourseStatus() {
     return (
-        <div id="wd-course-status">
+        <div id="wd-course-status" style={{ width: "350px" }}>
             <h2>Course Status</h2>
-            <button id="wd-unpublish">Unpublish</button> 
-            <button id="wd-publish">Publish</button><br/><br/>
-            <button id="wd-import-existing-content">Import Existing Content</button><br/>
-            <button id="wd-import-commons">Import from Commons</button><br/>
-            <button id="wd-choose-home">Choose Home Page</button><br/>
-            <button id="wd-view-course-stream">View Course Stream</button><br/>
-            <button id="wd-new-announcement">New Announcement</button><br/>
-            <button id="wd-new-analytics">New Analytics</button><br/>
-            <button id="wd-view-course-notis">View Course Notifications</button><br/>
+            <div className="d-flex">
+                <div className="w-50 pe-1">
+                    <Button variant="secondary" size="lg" className="w-100 text-nowrap">
+                        <MdDoNotDisturbAlt className="me-2 fs-5" />Unpublish
+                    </Button></div>
+                <div className="w-50">
+                    <Button variant="success" size="lg" className="w-100">
+                        <FaCheckCircle className="me-2 fs-5" />Published
+                    </Button></div>
+            </div>
+            <br />
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <BiImport className="me-2 fs-5" />Import Existing Content
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <LiaFileImportSolid className="me-2 fs-5" />Import from Commons
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <FaHome className="me-2 fs-5" />Choose Home Page
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <FaChartBar className="me-2 fs-5" />View Course Stream
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <FaBullhorn className="me-2 fs-5" />New Announcement
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <FaChartBar className="me-2 fs-5" />New Analytics
+            </Button>
+            <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
+                <FaBell className="me-2 fs-5" />View Course Notification
+            </Button>
         </div>
     )
 }
