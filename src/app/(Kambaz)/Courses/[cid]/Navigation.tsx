@@ -5,7 +5,7 @@ import { ListGroupItem } from "react-bootstrap";
 
 export default function CourseNavigation() {
     const pathname = usePathname();
-    const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Gardes", "People"];
+    const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
     return (
         <div id="wd-courses-naviagtion" className="wd-list-group fs-5 rounded-0">
             {links.map((link) => (
@@ -16,4 +16,5 @@ export default function CourseNavigation() {
             ))}
         </div>
     )
-}
+
+    

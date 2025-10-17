@@ -7,7 +7,8 @@ import { FaUserCircle } from "react-icons/fa";
 
 export default function PeopleTable() {
     const { cid } = useParams();
-    const {user, enrollments} = db.enrollments;
+    const user = db.enrollments;
+    const enrollments = db.enrollments;
     return (
         <div id="wd-people-table" className="p-5">
             <Table striped>
