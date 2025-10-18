@@ -3,7 +3,6 @@ import CourseNavigation from "./Navigation";
 import { FaAlignJustify } from "react-icons/fa";
 import { courses } from "../../Database";
 import BreadCrumb from "./Breadcrumb";
-import { BiRadioCircle } from "react-icons/bi";
 
 export default async function CoursesLayout( { children, params}: Readonly<{ children: ReactNode; params: Promise< {cid: string }>}>) {
         const { cid } = await params;
@@ -12,7 +11,7 @@ export default async function CoursesLayout( { children, params}: Readonly<{ chi
             <div id="wd-courses">
                 <h2 className="text-danger">
                     <FaAlignJustify className="me-4 fs-4 mb-1" />
-                    <BreadCrumb course={course?.name} />
+                    <BreadCrumb course={course} />
                 </h2> <hr />
             
                 <div className="d-flex">
