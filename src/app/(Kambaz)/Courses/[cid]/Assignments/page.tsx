@@ -26,8 +26,8 @@ export default function Assignments() {
                         Assignments <AssignmentHeaderControlButtons />
                     </div>
                     <ListGroup className="wd-assignment-list rounded-0">
-                        {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
-                            <ListGroupItem className="wd-assignment-list-item p-3 ps-1">
+                        {assignments.filter((assignment) => assignment.course === cid).map((assignment) => (
+                            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1">
                                 
                                 <BsGripVertical className="me-2 fs-3" /> {assignment.title} <AssignmentControlButtons />
                             </ListGroupItem>
