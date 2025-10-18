@@ -7,7 +7,7 @@ export default function BreadCrumb({ course }: { course : { name: string} | unde
     const current = pathname.split("/").pop();
     return (
         <span>
-            {course} {course ? course.name : "Course"} &gt; {current}
+            {course ? course.name : "Course"} &gt; {current}
         </span>
     )
 }
