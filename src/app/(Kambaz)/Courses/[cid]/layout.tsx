@@ -1,22 +1,31 @@
-import { ReactNode } from "react";
+"use client";
+import { ReactNode, useState } from "react";
 import CourseNavigation from "./Navigation";
-import { FaAlignJustify } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useParams } from "next/navigation";
+import { FaBars } from "react-icons/fa";
 import { courses } from "../../Database";
 import BreadCrumb from "./Breadcrumb";
 
-export default async function CoursesLayout( { children, params}: Readonly<{ children: ReactNode; params: Promise< {cid: string }>}>) {
-        const { cid } = await params;
-        const course = courses.find((course) => course._id === cid)
+export default function CoursesLayout( { children}: {children: ReactNode}) {
+        const { cid } = useParams;
+        const { courses } = useSelector((state: any) => state.coursesReducer);
+        const course = courses.find((course: any) => course._id === cid);
+        const [collapsed, setCollapsed] = useState();
         return (
             <div id="wd-courses">
                 <h2 className="text-danger">
-                    <FaAlignJustify className="me-4 fs-4 mb-1" />
-                    <BreadCrumb course={course} />
+                    <button className="me-3 bg-transparent p-0" 
+                    style={{border: "none", outline: "none"}} 
+                    onClick={() => setCollapsed((prev) => !prev)}>
+                        <FaBars className="text-danger fs-4"/>
+                    </button>
+                    {<BreadCrumb course={course?.name} />}
                 </h2> <hr />
             
                 <div className="d-flex">
                     <div className="d-none d-md-block">
-                        <CourseNavigation />
+                        <CourseNavigation collapsed={collapsed} />
                     </div>
                     <div className="flex-fill">
                         {children}

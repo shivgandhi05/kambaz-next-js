@@ -5,9 +5,61 @@ import { FaRProject } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import Link from "next/link";
+import { useEffect, useMemo } from "react";
+import { updateAssignment, deleteAssignment } from "../reducer";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function AssignmentEditor() {
-    const [submissionType, setSubmissionType] = useState("ONLINE");
+    const {cid, aid} = useParams();
+    const dispatch = useDispatch();
+
+    const { assignments} = useSelector((state: any) => state.assignmentsReducer);
+
+    const current = useMemo(() => assignments.find((a: any) => a.id === aid && a.course === cid), [assignments, aid, cid]);
+
+    const [title, setTitle] = useState("");
+    const [points, setPoints] = useState<number>(0);
+    const [dueDate, setDueDate] = useState("");
+    const [availableFrom, setAvailableFrom] = useState("");
+    const [availableUntil, setAvailableUntil] = useState("");
+    const [description, setDescription] = useState("");
+
+    useEffect(() => {
+        if (!current) return;
+        setTitle(current.title ?? "");
+        setPoints(current.points ?? 0);
+        setDueDate(current.dueDate ?? "");
+        setAvailableFrom(current.availableFrom ?? "");
+        setAvailableUntil(current.availableUntil ?? "");
+        setDescription(current.description ?? "");
+    }, [current]);
+
+    if (!current) {
+        return (
+          <div className="p-4">
+            <h4>Assignment not found.</h4>
+            <Link href={`/Courses/${cid}/Assignments`} className="btn btn-secondary mt-3">
+              Back to Assignments
+            </Link>
+          </div>
+        );
+      }
+    
+      const listHref = `/Courses/${cid}/Assignments`;
+    
+     
+      const buildUpdated = () => ({
+        ...current,
+        title: title.trim() || "Untitled",
+        points: Number.isFinite(points) ? points : 0,
+        dueDate,
+        availableFrom,
+        availableUntil,
+        description,
+      });
+
+    // const [submissionType, setSubmissionType] = useState("ONLINE");
     return (
 
         

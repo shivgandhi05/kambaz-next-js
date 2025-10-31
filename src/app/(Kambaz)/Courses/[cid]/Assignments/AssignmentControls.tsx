@@ -2,9 +2,18 @@ import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useDispatch, UseDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { addAssignment } from "./reducer";
 
 
 export default function AssignmentControlButtons() {
+    const { cid } = useParams();
+    const dispatch =useDispatch();
+
+    const aid = uuidv4();
     return (
         <div id="wd-assignment-controls" className="text-nowrap d-flex align-items-center">
             {/* search bar */}
@@ -23,10 +32,13 @@ export default function AssignmentControlButtons() {
                 </Button>
 
                 {/* Add assignment button */}
-                <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-assignment-btn">
-                    <FaPlus className="postion-relative me-2" style={{ bottom: "1px" }} />
-                    Assignment
-                </Button>
+                <Link href={`/Courses/${cid}/Assignments/${aid}`}
+                    onClick={() => {
+                        dispatch(addAssignment({_id: aid, title: "New Assignmnet", course: cid, }));
+                    }}
+                    className="btn btn-danger btn-lg me-1" id="wd=add-assignmnet-btn">
+                        <FaPlus className="me-2" />Assignment
+                        </Link>
             </div>
         </div>
     )

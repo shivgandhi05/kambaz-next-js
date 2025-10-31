@@ -1,20 +1,24 @@
 "use client";
-import Link from "next/link";
 import AssignmentControls from "./AssignmentControls";
 import AssignmentHeaderControlButtons from "./AssignmentHeaderControlButtons";
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { BsGripVertical } from 'react-icons/bs';
-import { FaRegEdit } from "react-icons/fa";
 import { FaCaretDown } from "react-icons/fa6";
-import GreenCheckmark from "../Modules/GreenCheckmark";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { useParams } from "next/navigation";
 import * as db from "../../../Database";
+import { useState } from "react";
+import { addAssignment, deleteAssignment, updateAssignment} from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 
 
 export default function Assignments() {
     const { cid } = useParams();
-    const assignments = db.assignments;
+    const dispatch = useDispatch();
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    const [ title, setTitle] = useState("");
+
+    
     return (
         <div className="ps-4">
             <AssignmentControls /><br /><br />
