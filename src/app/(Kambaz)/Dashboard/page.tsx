@@ -10,10 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
 
 export default function Dashboard () {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const { enrollments } = db;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { courses } = useSelector((state: any) => state.coursesReducer);
     const dispatch = useDispatch();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [course, setCourse] = useState<any>({
         _id: "0", name: "New Course", number: "New Number",
         startDate: "2023-09-10", endDate: "2023-12-15",

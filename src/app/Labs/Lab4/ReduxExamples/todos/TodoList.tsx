@@ -7,6 +7,7 @@ export default function TodoList() {
     { id: "1", title: "Learn React" },
     { id: "2", title: "Learn Node"  }]);
   const [todo, setTodo] = useState({ id: "-1", title: "Learn Mongo" });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addTodo = (todo: any) => {
     const newTodos = [ ...todos, { ...todo,
       id: new Date().getTime().toString() }];
@@ -17,6 +18,7 @@ export default function TodoList() {
     const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateTodo = (todo: any) => {
     const newTodos = todos.map((item) =>
       (item.id === todo.id ? todo : item));

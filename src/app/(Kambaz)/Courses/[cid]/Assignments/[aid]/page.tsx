@@ -13,9 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 export default function AssignmentEditor() {
     const {cid, aid} = useParams();
     const dispatch = useDispatch();
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { assignments} = useSelector((state: any) => state.assignmentsReducer);
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const current = useMemo(() => assignments.find((a: any) => a.id === aid && a.course === cid), [assignments, aid, cid]);
 
     const [title, setTitle] = useState("");
@@ -59,7 +59,7 @@ export default function AssignmentEditor() {
         description,
       });
 
-    // const [submissionType, setSubmissionType] = useState("ONLINE");
+    const [submissionType, setSubmissionType] = useState("ONLINE");
     return (
 
         

@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function Modules() {
     const { cid } = useParams();
     const [moduleName, setModuleName] = useState("");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
     return (

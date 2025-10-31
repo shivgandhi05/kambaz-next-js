@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Assignments() {
     const { cid } = useParams();
     const dispatch = useDispatch();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const [ title, setTitle] = useState("");
 
