@@ -11,17 +11,7 @@ const assignmentsSlice = createSlice({
     reducers: {
       addAssignment: (state, { payload: assignment }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newAssignment: any = {
-            _id: uuidv4(),
-            title: assignment.title,
-            course: assignment.course,
-            description: assignment.description || "",
-            points: assignment.points || 0,
-            dueDate: assignment.dueDate || "",
-            availableFrom: assignment.availableFrom || "",
-            availableUntil: assignment.availableUntil || "",
-            published: false,
-          };
+        const newAssignment = {... state.assignments, _id:uuidv4()};
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           state.assignments = [...state.assignments, newAssignment] as any;
         },
