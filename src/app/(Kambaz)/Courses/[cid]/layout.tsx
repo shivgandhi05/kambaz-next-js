@@ -6,11 +6,12 @@ import { useParams } from "next/navigation";
 import { FaBars } from "react-icons/fa";
 import { courses } from "../../Database";
 import BreadCrumb from "./Breadcrumb";
+import RootState from "../../store";
 
 export default function CoursesLayout( { children}: {children: ReactNode}) {
-        const { cid } = useParams;
+        const { cid } = useParams();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { courses } = useSelector((state: any) => state.coursesReducer);
+        const { courses } = useSelector((state: RootState) => state.coursesReducer);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const course = courses.find((course: any) => course._id === cid);
         const [collapsed, setCollapsed] = useState();
