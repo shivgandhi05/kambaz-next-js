@@ -14,7 +14,7 @@ export default function CoursesLayout( { children}: {children: ReactNode}) {
         const { courses } = useSelector((state: RootState) => state.coursesReducer);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const course = courses.find((course: any) => course._id === cid);
-        const [collapsed, setCollapsed] = useState();
+        const [collapsed, setCollapsed] = useState(false);
         return (
             <div id="wd-courses">
                 <h2 className="text-danger">
