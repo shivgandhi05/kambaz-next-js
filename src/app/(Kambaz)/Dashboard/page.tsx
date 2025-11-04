@@ -9,6 +9,15 @@ import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
 
+type Course= {
+    _id: string;
+    name: string;
+    number: string;
+    startDate: string;
+    endDate: string;
+    image: string;
+    description: string;
+}
 export default function Dashboard () {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -32,7 +41,7 @@ export default function Dashboard () {
                 <button className="btn btn-warning float-end me-2" onClick={() => dispatch(updateCourse(course))} id="wd-update-course-click">Update</button>
             </h5><br />
             <FormControl value={course.name} className="mb-2" onChange={(e) => setCourse({...course, name: e.target.value})}/>
-            <FormControl value={course.description} rows={3} onChange={(e) => setCourse({...course, description: e.target.value})}/>
+            <FormControl as="textarea" value={course.description} rows={3} onChange={(e) => setCourse({...course, description: e.target.value})}/>
             <hr/>
             <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
             <div id="wd-dashboard-courses">
@@ -43,7 +52,7 @@ export default function Dashboard () {
                             enrollment.user === currentUser._id && 
                             enrollment.course === course._id
                     )) */}
-                    {courses.map((course) => (
+                    {courses.map((course: Course) => (
                         <Col key={course._id} className="wd-dashboard-course" style={{ width: "300px"}}>
                         <Card>
                             <Link href={`/Courses/${course._id}/Home`} 
