@@ -11,6 +11,12 @@ import { useState } from "react";
 import { addAssignment, deleteAssignment, updateAssignment} from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 
+type Assignment = {
+    _id: string;
+    title: string;
+    course: string;
+};
+
 
 export default function Assignments() {
     const { cid } = useParams();
