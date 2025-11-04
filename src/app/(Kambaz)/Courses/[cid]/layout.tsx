@@ -23,7 +23,7 @@ export default function CoursesLayout( { children}: {children: ReactNode}) {
                     onClick={() => setCollapsed((prev) => !prev)}>
                         <FaBars className="text-danger fs-4"/>
                     </button>
-                    {<BreadCrumb course={course?.name} />}
+                    {<BreadCrumb course={course} />}
                 </h2> <hr />
             
                 <div className="d-flex">z
