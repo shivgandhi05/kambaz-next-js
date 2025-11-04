@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { ListGroup, ListGroupItem } from "react-bootstrap";

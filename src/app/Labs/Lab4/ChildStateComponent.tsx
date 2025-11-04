@@ -1,3 +1,4 @@
+
 export default function ChildStateComponent({counter, setCounter}: {counter: number; setCounter: (counter: number) => void;}) {
     return (
         <div id="wd-child-state">
