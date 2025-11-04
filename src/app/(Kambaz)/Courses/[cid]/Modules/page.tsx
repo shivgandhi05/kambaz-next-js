@@ -11,6 +11,12 @@ import { v4 as uuidv4} from "uuid";
 import { addModule, editModule, updateModule, deleteModule } from './reducer';
 import { useSelector, useDispatch } from 'react-redux';
 
+type Module = {
+    _id: string;
+    name: string;
+    course: string;
+};
+
 export default function Modules() {
     const { cid } = useParams();
     const [moduleName, setModuleName] = useState("");
@@ -26,8 +32,10 @@ export default function Modules() {
             }} /><br /><br /><br /><br />
             <ListGroup id="wd-modules" className="rounded-0">
                 {modules
-                    .filter((module) => module.course === cid)
-                    .map((module) => (
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .filter((module: any) => module.course === cid)
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .map((module: any) => (
                     <ListGroupItem key={module._id}
                         className="wd-module p-0 me-5 fs-5 border-gray">
                         <div className="wd-title p-3 ps-2 bg-secondary">
