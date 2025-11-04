@@ -28,7 +28,7 @@ export default function CoursesLayout( { children}: {children: ReactNode}) {
             
                 <div className="d-flex">z
                     <div className="d-none d-md-block">
-                        <CourseNavigation collapsed={collapsed} />
+                        <CourseNavigation collapsed={collapsed} onToggle={() => setCollapsed((prev) => !prev)} />
                     </div>
                     <div className="flex-fill">
                         {children}
