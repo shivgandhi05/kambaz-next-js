@@ -9,9 +9,9 @@ import ObjectStateVariable from "./ObjectStateVariable";
 import ParentStateComponent from "./ParentStateComponent";
 import PassingDataOnEvent from "./PassingDataOnEvent";
 import PassingFunctions from "./PassingFunctions";
-// import CounterRedux from "./ReduxExamples/CounterRedux/page";
-// import HelloRedux from "./ReduxExamples/HelloRedux/page";
-import ReduxExamples from "./ReduxExamples/page";
+import CounterRedux from "./ReduxExamples/CounterRedux/page";
+import HelloRedux from "./ReduxExamples/HelloRedux/page";
+import ReduxExamples from "./ReduxExamples";
 import TodoList from "./ReduxExamples/todos/TodoList";
 import StringStateVariables from "./StringStateVariables";
 import store from "./store";
@@ -37,6 +37,8 @@ export default function Lab4() {
             <ArrayStateVariable />
             <ParentStateComponent />
             <ReduxExamples />
+            <CounterRedux />
+            <HelloRedux />
             <TodoList />
         </div>
         </Provider>
