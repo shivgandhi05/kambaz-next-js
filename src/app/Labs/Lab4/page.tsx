@@ -9,7 +9,7 @@ import ObjectStateVariable from "./ObjectStateVariable";
 import ParentStateComponent from "./ParentStateComponent";
 import PassingDataOnEvent from "./PassingDataOnEvent";
 import PassingFunctions from "./PassingFunctions";
-import CounterRedux from "./ReduxExamples/CounterRedux/page";
+import CounterRedux from "./ReduxExamples/CounterRedux";
 import HelloRedux from "./ReduxExamples/HelloRedux/page";
 import ReduxExamples from "./ReduxExamples";
 import TodoList from "./ReduxExamples/todos/TodoList";
