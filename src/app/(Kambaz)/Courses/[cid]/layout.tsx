@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { FaBars } from "react-icons/fa";
 import { courses } from "../../Database";
 import BreadCrumb from "./Breadcrumb";
-import RootState from "../../store";
+import {RootState} from "../../store";
 
 export default function CoursesLayout( { children}: {children: ReactNode}) {
         const { cid } = useParams();
@@ -26,7 +26,7 @@ export default function CoursesLayout( { children}: {children: ReactNode}) {
                     {<BreadCrumb course={course?.name} />}
                 </h2> <hr />
             
-                <div className="d-flex">
+                <div className="d-flex">z
                     <div className="d-none d-md-block">
                         <CourseNavigation collapsed={collapsed} />
                     </div>
