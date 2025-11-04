@@ -11,10 +11,17 @@ import { v4 as uuidv4} from "uuid";
 import { addModule, editModule, updateModule, deleteModule } from './reducer';
 import { useSelector, useDispatch } from 'react-redux';
 
+type Lesson = {
+    _id: string;
+    name: string;
+};
+
 type Module = {
     _id: string;
     name: string;
     course: string;
+    lessons?: Lesson[];
+    editing?: boolean;
 };
 
 export default function Modules() {
@@ -59,7 +66,7 @@ export default function Modules() {
                         </div>
                         {module.lessons && (
                             <ListGroup className="wd-lessons rounded-0">
-                                {module.lessons.map((lesson) => (
+                                {module.lessons.map((lesson: any) => (
                                     <ListGroupItem key={lesson._id} className="wd-lesson p-3 ps-1">
                                         <BsGripVertical className="me-2 fs-3" /> {lesson.name} <LessonControlButtons />
                                     </ListGroupItem>
