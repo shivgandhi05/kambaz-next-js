@@ -1,8 +1,9 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store";
 export default function HelloRedux() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { message } = useSelector((state: any) => state.helloReducer);
+  const { message } = useSelector((state: RootState) => state.helloReducer);
   return (
     <div id="wd-hello-redux">
       <h3>Hello Redux</h3>
