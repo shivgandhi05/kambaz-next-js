@@ -10,7 +10,7 @@ import ParentStateComponent from "./ParentStateComponent";
 import PassingDataOnEvent from "./PassingDataOnEvent";
 import PassingFunctions from "./PassingFunctions";
 import CounterRedux from "./ReduxExamples/CounterRedux";
-import HelloRedux from "./ReduxExamples/HelloRedux/page";
+import HelloRedux from "./ReduxExamples/HelloRedux";
 import ReduxExamples from "./ReduxExamples";
 import TodoList from "./ReduxExamples/todos/TodoList";
 import StringStateVariables from "./StringStateVariables";
