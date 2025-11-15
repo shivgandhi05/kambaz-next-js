@@ -3,38 +3,74 @@ import { Form, FormCheck, FormControl, FormGroup, FormLabel, FormSelect } from "
 import { Row, Col } from "react-bootstrap";
 import { FaRProject } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 import Link from "next/link";
-
-export default function AssignmentEditor() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function AssignmentEditor({ assignmentId, onSave, onCancel}: any) {
+    const { cid } = useParams();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const [submissionType, setSubmissionType] = useState("ONLINE");
+    const [assignment, setAssignment] = useState({
+        _id: '',
+        title: 'New Assignment',
+        description: `The assignment is available online
+Submit a link to the landing page of your Web application running on Netlify.
+The landing page should include the following:
+
+- Your full name and section
+- Links to each of the lab assignments
+- Link to the Kanbas application
+- Links to all relevant source code repositories
+
+The Kanbas application should include a link to navigate back to the landing page.`,
+        points: 100,
+        assignmentGroup: 'ASSIGNMENTS',
+        displayGradeAs: 'PERCENTAGE',
+        submissionType: 'ONLINE',
+        onlineEntryOptions: {
+            textEntry: false,
+            websiteUrl: false,
+            mediaRecordings: false,
+            studentAnnotation: false,
+            fileUploads: false
+        },
+        assignTo: 'Everyone',
+        dueDate: '2024-05-13',
+        availableFrom: '2024-05-06',
+        availableUntil: '2024-05-20',
+        course: cid as string,
+    });
+    useEffect(() => {
+        if (assignmentId && assignmentId !== 'new') {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const existingAssignment = assignments.find((a: any) => a._id === assignmentId);
+            if (existingAssignment) {
+                setAssignment(existingAssignment);
+                setSubmissionType(existingAssignment.submissionType || 'ONLINE');
+            }
+        }
+    }, [assignmentId, assignments]);
     return (
 
         
         <div id="wd-assignments-editor" className="ps-5">
             <Form style={{width: 600}}>
                 <FormLabel>Assignment Name</FormLabel>
-                <FormControl type="text" id="wd-assignment-name" defaultValue="A1"  />
+                <FormControl type="text" id="wd-assignment-name" defaultValue={assignment.title} style={{width:370}} onChange={(e) => setAssignment({...assignment, title : e.target.value})}  />
                 <FormControl as="textarea" 
                 rows={10} 
                 id="wd-assignment-instructions" 
-                defaultValue={`The assignment is available online
-    Submit a link to the landing page of your Web application running on Netlify.
-                                The landing page should include the following:
-
-• Your full name and section
-• Links to each of the lab assignments
-• Link to the Kanbas application
-• Links to all relevant source code repositories
-
-The Kanbas application should include a link to navigate back to the landing page.`} />
+                defaultValue={assignment.description} onChange={(e) => setAssignment({...assignment, description : e.target.value})} />
             </Form>
     
             {/* points */}
             <div id="wd-points">
                 <Row className="mb-3" controlid="points">
                     <FormLabel column sm={2}>Points</FormLabel>
-                    <FormControl type="number" id="wd-points" defaultValue={100} style={{width:370}} />
+                    <FormControl type="number" id="wd-points" defaultValue={assignment.points} onChange={(e) => setAssignment({...assignment, points : parseInt(e.target.value)})} />
                 </Row> 
             </div>
 
@@ -42,7 +78,7 @@ The Kanbas application should include a link to navigate back to the landing pag
             <div id="wd-group">
                 <Row className="mb-3" controlid="group">
                     <FormLabel column sm={2}>Assignment Group</FormLabel>
-                    <FormSelect id="wd-group" style={{width:370}}>
+                    <FormSelect id="wd-group" style={{width:370}} onChange={(e) => setAssignment({...assignment, assignmentGroup : e.target.value})}>
                         <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                         <option value="QUIZZES">QUIZZES</option>
                         <option value="EXAMS">EXAMS</option>
@@ -55,7 +91,7 @@ The Kanbas application should include a link to navigate back to the landing pag
             <div id="wd-display-grade-as">
                 <Row className="mb-3" controlid="display-grade-as">
                     <FormLabel column sm={2}>Display Grade As</FormLabel>
-                    <FormSelect id="wd-display-grade-as" style={{width:370}}>
+                    <FormSelect id="wd-display-grade-as" style={{width:370}} defaultValue={assignment.displayGradeAs} onChange={(e) => setAssignment({...assignment, displayGradeAs : e.target.value})}>
                         <option value="PERCENTAGE">Percentage</option>
                         <option value="LETTER">Letter</option>
                         <option value="POINTS">Points</option>
@@ -68,7 +104,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Row className="mb-3" controlid="submission-type">
                 <FormLabel column sm={2}>Submission Type</FormLabel>
                 <Col sm={7}>
-                    <FormSelect value={submissionType} onChange={(e) => setSubmissionType(e.target.value)} style={{width:350}}>
+                    <FormSelect value={submissionType} onChange={(e) => setAssignment({...assignment, submissionType : e.target.value})} style={{width:350}}>
                         <option value="ONLINE">Online</option>
                         <option value="PAPER">Paper</option>
                         <option value="NO_SUBMISSION">No Submission</option>
@@ -111,7 +147,7 @@ The Kanbas application should include a link to navigate back to the landing pag
             <div id="wd-assign-to">
                 <Row className="mb-3" controlid="assign-to">
                     <FormLabel column sm={2}>Assign To</FormLabel>
-                    <FormSelect id="wd-group" style={{width:370}}>
+                    <FormSelect id="wd-group" style={{width:370}} defaultValue={assignment.assignTo} onChange={(e) => setAssignment({ ...assignment, assignTo: e.target.value })}>
                         <option value="Everyone">Everyone</option>
                     </FormSelect>
                 </Row>
@@ -122,7 +158,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Row className="mb-3" controlid="due-dates">
                     <FormLabel column sm={2}>Due Date</FormLabel>
                     <Col sm={7}>
-                        <FormControl type="date" defaultValue="2024-05-13" id="wd-due-date" style={{width:350}} />
+                        <FormControl type="date" defaultValue={assignment.dueDate} id="wd-due-date" style={{width:350}} onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })} />
                     </Col>
                 </Row>
             </div>
@@ -130,14 +166,26 @@ The Kanbas application should include a link to navigate back to the landing pag
             {/* available dates */}
             <div id="wd-available-dates">
                 <FormGroup className="mb-3" id="available-dates">
-                <Row className="mb-3" controlid="available-dates">
-                    <FormLabel column sm={2}>Available from</FormLabel>
-                    <Col sm={7} className="d-flex align-items-center">
-                        <FormControl type="date" defaultValue="2024-05-06" id="wd-available-from" style={{width:160}} />
-                        <span className="mx-2">Until</span>
-                        <FormControl type="date" defaultValue="2024-05-20" id="wd-available-until" style={{width:160}} />   
-                    </Col>
-                </Row>
+                    <Row className="mb-3">
+                        <FormLabel column sm={2}>Available from</FormLabel>
+                        <Col sm={7} className="d-flex align-items-center">
+                            <FormControl 
+                                type="date" 
+                                value={assignment.availableFrom}
+                                onChange={(e) => setAssignment({ ...assignment, availableFrom: e.target.value })}
+                                id="wd-available-from" 
+                                style={{width:160}} 
+                            />
+                            <span className="mx-2">Until</span>
+                            <FormControl 
+                                type="date" 
+                                value={assignment.availableUntil}
+                                onChange={(e) => setAssignment({ ...assignment, availableUntil: e.target.value })}
+                                id="wd-available-until" 
+                                style={{width:160}} 
+                            />   
+                        </Col>
+                    </Row>
                 </FormGroup>
             </div>
             {/* buttons */}

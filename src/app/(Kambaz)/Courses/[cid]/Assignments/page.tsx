@@ -7,14 +7,19 @@ import { FaCaretDown } from "react-icons/fa6";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { useParams } from "next/navigation";
 import * as db from "../../../Database";
-import { useState } from "react";
-import { addAssignment, deleteAssignment, updateAssignment} from "./reducer";
+import { useEffect, useState } from "react";
+import { setAssignment, addAssignment, deleteAssignment, updateAssignment} from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
+import * as client from "../../client";
+import AssignmentEditor from "./[aid]/page";
 
 type Assignment = {
     _id: string;
     title: string;
     course: string;
+    description: string;
+    points: number;
+    dueDate: string;
 };
 
 
@@ -23,9 +28,57 @@ export default function Assignments() {
     const dispatch = useDispatch();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-    const [ title, setTitle] = useState("");
+    const [ selectedAssignmentId, setSelectedAssignmentId ] = useState<string | null>(null);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-    
+
+    const fetchAssignments = async () => {
+        const assignments = await client.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignment(assignments));
+    };
+    const handleDeleteAssignment = async (assignmentId: string) => {
+        await client.deleteAssignment(assignmentId);
+        dispatch(deleteAssignment(assignmentId));
+    };
+    const handleCreateNew = () => {
+        setSelectedAssignmentId('new');
+        setIsEditorOpen(true);
+    };
+
+    const handleEdit = (assignmentId: string) => {
+        setSelectedAssignmentId(assignmentId);
+        setIsEditorOpen(true);
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleSaveAssignment = async (assignmentData: any) => {
+        if (selectedAssignmentId === 'new') {
+            const newAssignment = await client.createAssignmentForCourse(
+                cid as string,
+                assignmentData
+            );
+            dispatch(addAssignment(newAssignment));
+        } else {
+            const updatedAssignment = await client.updateAssignment(assignmentData);
+            dispatch(updateAssignment(updatedAssignment));
+        }
+        setIsEditorOpen(false);
+        setSelectedAssignmentId(null);
+    };
+
+    const handleCancel = () => {
+        setIsEditorOpen(false);
+        setSelectedAssignmentId(null);
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
+
+    if(isEditorOpen) {
+        return (
+            <AssignmentEditor assignmentId={selectedAssignmentId} onSave={handleSaveAssignment} onCancel={handleCancel}/>
+    );
+
+    }
     return (
         <div className="ps-4">
             <AssignmentControls />

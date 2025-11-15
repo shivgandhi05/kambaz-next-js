@@ -9,9 +9,12 @@ const assignmentsSlice = createSlice({
     name: "assignments",
     initialState,
     reducers: {
+      setAssignment: (state, action) => {
+        state.assignments = action.payload;
+      },
       addAssignment: (state, { payload: assignment }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newAssignment = {... state.assignments, _id:uuidv4()};
+        const newAssignment = {...state.assignments, _id:uuidv4()};
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           state.assignments = [...state.assignments, newAssignment] as any;
         },
@@ -31,5 +34,5 @@ const assignmentsSlice = createSlice({
     },
   });
 
-  export const { addAssignment, deleteAssignment, updateAssignment } = assignmentsSlice.actions;
+  export const { addAssignment, deleteAssignment, updateAssignment, setAssignment } = assignmentsSlice.actions;
   export default assignmentsSlice.reducer;

@@ -27,8 +27,11 @@ const coursesSlice = createSlice({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ) as any;
         },
+        setCourses: (state, {payload: course}) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            state.courses = courses as any;
+        },
     },
 });
-export const {addNewCourse, deleteCourse, updateCourse} =
-    coursesSlice.actions;
+export const {addNewCourse, deleteCourse, updateCourse, setCourses} = coursesSlice.actions;
 export default coursesSlice.reducer;
