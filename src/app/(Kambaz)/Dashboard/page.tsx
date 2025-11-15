@@ -46,11 +46,11 @@ export default function Dashboard () {
     };
     const onDeleteCourse = async (courseId: string) => {
         const status = await client.deleteCourse(courseId);
-        dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+        dispatch(setCourses(courses.filter((course: Course) => course._id !== courseId)));
     };
     const onUpdateCourse = async () => {
         await client.updateCourse(course);
-        dispatch(setCourses(courses.map((c) => {
+        dispatch(setCourses(courses.map((c: Course) => {
             if (c._id === course._id) {return course;}
             else {return c};
         })));
