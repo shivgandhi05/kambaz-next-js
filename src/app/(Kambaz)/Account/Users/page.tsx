@@ -6,7 +6,6 @@ import * as client from "../client";
 import { FormControl } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa6";
 export default function Users() {
-const { uid } = useParams();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
  const [users, setUsers] = useState<any[]>([]);
  const [role, setRole] = useState("");
