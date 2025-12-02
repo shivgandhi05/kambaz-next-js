@@ -4,8 +4,8 @@ import model from "../Courses/model.js";
 export default function ModulesDao(db) {
     async function updateModule(courseId, moduleId, moduleUpdates) {
       const course = await model.findById(courseId);
-      const module = course.modules.id(moduleId);
-        Object.assign(mod, moduleUpdates);
+      const mod = course.modules.id(moduleId);
+        Object.assign(module, moduleUpdates);
         await course.save();
         return module;
     }
