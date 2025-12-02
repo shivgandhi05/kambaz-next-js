@@ -15,16 +15,28 @@ export default function PeopleDetails({ uid, onClose }: { uid: string | null; on
         onClose();
       };
     
-  const [user, setUser] = useState<any>({});
-  const fetchUser = async () => {
+      const [user, setUser] = useState<{
+        _id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        role: string;
+        loginId: string;
+        section: string;
+        totalActivity: number;
+      } | null>(null);
+
+  const [name, setName] = useState("");
+
+  const [editing, setEditing] = useState(false);
+
+  const fetchUser = async () => { 
     if (!uid) return;
     const user = await client.findUserById(uid);
     setUser(user);
   };
-
-  const [name, setName] = useState("");
-  const [editing, setEditing] = useState(false);
   const saveUser = async () => {
+    if (!user) return;
     const [firstName, lastName] = name.split(" ");
     const updatedUser = { ...user, firstName, lastName };
     await client.updateUser(updatedUser);
@@ -35,8 +47,8 @@ export default function PeopleDetails({ uid, onClose }: { uid: string | null; on
 
   useEffect(() => {
     if (uid) fetchUser();
-  }, [uid]);
-  if (!uid) return null;
+  }, [uid, fetchUser]);
+  if (!uid || !user) return null;
   return (
     <div className="wd-people-details position-fixed top-0 end-0 bottom-0 bg-white p-4 shadow w-25">
         {!editing && (
