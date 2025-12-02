@@ -8,8 +8,23 @@ import { useState, useEffect } from "react";
 import PeopleDetails from "../Details";
 import Link from "next/link";
 
+type User = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  loginId: string;
+  section: string;
+  role: string;
+  lastActivity: string;
+  totalActivity: number;
+};
+type PeopleTableProps = {
+  users?: User[];
+  fetchUsers: () => void;
+};
 
-export default function PeopleTable({ users = [], fetchUsers }: { users?: any[]; fetchUsers: () => void; }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function PeopleTable({ users = [], fetchUsers }: PeopleTableProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [showUserId, setShowUserId] = useState<string | null>(null);
   return (
@@ -34,8 +49,8 @@ export default function PeopleTable({ users = [], fetchUsers }: { users?: any[];
            fetchUsers();
          }}/>
      )}
-          {enrollments.map((enrollment) => (
-              <tr key={enrollment._id}>
+          {users.map((user) => (
+              <tr key={user._id}>
                 <td className="wd-full-name text-nowrap">
                 <span className="text-decoration-none"
                  onClick={() => {
@@ -44,21 +59,21 @@ export default function PeopleTable({ users = [], fetchUsers }: { users?: any[];
                  }} >
                   <FaUserCircle className="me-2 fs-1 text-secondary" />
                   <span className="wd-first-name">
-                    {enrollment.user.firstName}
+                    {user.firstName}
                   </span>{" "}
                   <span className="wd-last-name">
-                    {enrollment.user.lastName}
+                    {user.lastName}
                   </span>
                 </span>
                 </td>
-                <td className="wd-login-id">{enrollment.user.loginId}</td>
-                <td className="wd-section">{enrollment.user.section}</td>
-                <td className="wd-role">{enrollment.user.role}</td>
+                <td className="wd-login-id">{user.loginId}</td>
+                <td className="wd-section">{user.section}</td>
+                <td className="wd-role">{user.role}</td>
                 <td className="wd-last-activity">
-                  {enrollment.user.lastActivity}
+                  {user.lastActivity}
                 </td>
                 <td className="wd-total-activity">
-                  {enrollment.user.totalActivity}
+                  {user.totalActivity}
                 </td>
               </tr>
             ))}
