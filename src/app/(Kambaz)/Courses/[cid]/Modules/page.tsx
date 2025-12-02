@@ -30,7 +30,7 @@ export default function Modules() {
     const dispatch = useDispatch();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onUpdateModule = async (module: any) => {
-        await client.updateModule(module);
+        await client.updateModule(cid, module);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newModules = modules.map((m: any) => m._id === module._id ? module : m);
         dispatch(setModules(newModules));
@@ -46,7 +46,7 @@ export default function Modules() {
         dispatch(setModules([...modules, module]));
     };
     const onRemoveModule = async (moduleId: string) => {
-        await client.deleteModule(moduleId);
+        await client.deleteModule(cid, moduleId);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
     };
