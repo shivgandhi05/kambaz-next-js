@@ -4,14 +4,14 @@ import { Button, FormControl, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useDispatch, UseDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { addAssignment } from "./reducer";
 
 
 export default function AssignmentControlButtons() {
     const { cid } = useParams();
-    const dispatch =useDispatch();
+    const dispatch = useDispatch();
 
     const aid = uuidv4();
     return (

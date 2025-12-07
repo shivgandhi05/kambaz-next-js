@@ -1,10 +1,13 @@
 "use client";
+import QuizzesControls from "./QuizzesControls";
 
 export default function Quizzes() {
     return (
-        <div>
-            <h2>Quizzes</h2>
-            <h3>Coming Soon...</h3>
+        <div className="ps-4">
+            <QuizzesControls />
+            <br />
+            <br />
+            
         </div>
     )
 }
