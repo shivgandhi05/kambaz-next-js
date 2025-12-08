@@ -2,6 +2,8 @@ import axios from "axios";
 const axiosWithCredentials = axios.create({ withCredentials: true});
 export const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 export const USERS_API = `${HTTP_SERVER}/api/users`;
+
+
 export const findAllUsers = async () => {
     const response = await axiosWithCredentials.get(USERS_API);
     return response.data;
@@ -14,7 +16,7 @@ export const signin = async (credentials: any) => {
 export const profile = async () => {
     const response = await axiosWithCredentials.post(`${USERS_API}/profile`);
     return response.data;
-}
+};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const signup = async (user: any ) => {
     const response = await axiosWithCredentials.post(`${USERS_API}/signup`, user);

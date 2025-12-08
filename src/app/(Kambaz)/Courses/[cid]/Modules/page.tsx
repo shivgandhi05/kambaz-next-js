@@ -24,10 +24,13 @@ type Module = {
 };
 export default function Modules() {
     const { cid } = useParams();
+
+    const dispatch = useDispatch();
+    
     const [moduleName, setModuleName] = useState("");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { modules } = useSelector((state: any) => state.modulesReducer);
-    const dispatch = useDispatch();
+    
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onUpdateModule = async (module: any) => {
         await client.updateModule(cid as string, module);

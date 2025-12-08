@@ -7,11 +7,12 @@ import { useParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
+import { addQuiz } from "./reducer";
+import * as client from "../../client";
 
 export default function QuizControlButtons() {
     const { cid } = useParams();
     const dispatch = useDispatch();
-
     const qid = uuidv4();
 
     return (
@@ -27,6 +28,9 @@ export default function QuizControlButtons() {
             <div className="ms-auto d-flex">
                 {/* Add quiz button */}
                 <Link href={`/Courses/${cid}/Quizzes/${qid}`}
+                    onClick={() => {
+                        dispatch(addQuiz({_id: qid, title: "New Quiz", course: cid, }));
+                    }}
                     className="btn btn-danger btn-lg me-1" id="wd=add-quiz-btn">
                         <FaPlus className="me-2" />Quiz
                 </Link>

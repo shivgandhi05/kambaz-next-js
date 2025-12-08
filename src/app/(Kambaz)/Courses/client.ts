@@ -6,6 +6,7 @@ const COURSES_API = `${HTTP_SERVER}/api/courses`;
 const MODULES_API = `${HTTP_SERVER}/api/modules`;
 const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
 const ENROLLMENTS_API = `${HTTP_SERVER}/api/enrollments`;
+const QUIZZES_API = `${HTTP_SERVER}/api/quizzes`;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createModuleForCourse = async (courseId: string, module: any) => {
@@ -119,6 +120,28 @@ export const findAllEnrollments = async () => {
     const response = await axios.get(`${COURSES_API}/${courseId}/users`);
     return response.data;
    };
+
+  export const findQuizzesForCourse = async (courseId: string) => {
+    const response = await axios.get(`${COURSES_API}/${courseId}/quizzes`);
+    return response.data;
+  };
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export const createQuizForCourse = async (courseId: string, quiz: any) => {
+    const response = await axios.post(`${COURSES_API}/${courseId}/quizzes`, quiz);
+    return response.data;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export const updateQuiz = async (quiz: any) => {
+    const response = await axios.put(`${QUIZZES_API}/${quiz._id}`, quiz);
+    return response.data;
+  };
+
+  export const deleteQuiz = async (quizId: string) => {
+    const response = await axios.delete(`${QUIZZES_API}/${quizId}`);
+    return response.data;
+  }
    
 
   

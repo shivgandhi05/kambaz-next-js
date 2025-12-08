@@ -192,9 +192,9 @@ The Kanbas application should include a link to navigate back to the landing pag
             <hr style={{margin: "20px 0"}} />
             <div className="justify-content-end d-flex">
                 {/* cancel button */}
-                <Link id ="wd-cancel-btn" href="/Courses/1234/Assignments" className="btn btn-lg btn-secondary mb-2 me-3">Cancel</Link>
+                <Link id ="wd-cancel-btn" href={`/Courses/${cid}/Assignments`} className="btn btn-lg btn-secondary mb-2 me-3">Cancel</Link>
                 {/* save button */}
-                <Link id="wd-save-btn" href="/Courses/1234/Assignments" className="btn btn-lg btn-danger mb-2 me-3">Save</Link>
+                <Link id="wd-save-btn" href={`/Courses/${cid}/Assignments`} className="btn btn-lg btn-danger mb-2 me-3">Save</Link>
             </div>
         </div>
     )
