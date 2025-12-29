@@ -2,6 +2,7 @@
 import React, {useState} from "react";
 import { FormCheck, FormControl } from "react-bootstrap";
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+
 export default function WorkingWithObjects() {
     const [assignment, setAssignment] = useState({
         id: 1, title: "NodeJS Assignment",
@@ -24,6 +25,7 @@ export default function WorkingWithObjects() {
             <FormControl className="w-25" id="wd-assignment-score" type="number" defaultValue={assignment.score} onChange={(e) => setAssignment({...assignment, score: parseInt(e.target.value)})}/>
             <a id="wd-update-assignment-complete" className="btn btn-primary float-end" href={`${ASSIGNMENT_API_URL}/completed/${assignment.completed}`}>Update completed</a>
             <FormCheck type="checkbox" id="wd-assignment-completed" checked={assignment.completed} onChange={(e) => setAssignment({...assignment, completed: e.target.checked})}/>
+                {/* module  */}
             <a id="wd-update-module-name" className="btn btn-primary float-end" href={`${MODULE_API_URL}/name/${module.name}`}>Update module name</a>
             <FormControl className="w-25" id="wd-module-name" defaultValue={module.name} onChange={(e) => setModule({...module, name: e.target.value})}/>
             <a id="wd-update-module-description" className="btn btn-primary float-end" href={`${MODULE_API_URL}/description/${module.description}`}>Update module description</a>

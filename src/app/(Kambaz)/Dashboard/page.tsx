@@ -2,13 +2,14 @@
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-// import * as db from "../Database";
 import { Row, Col, FormControl } from "react-bootstrap";
 import { Card, CardBody, CardImg, CardTitle, CardText } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewCourse, deleteCourse, updateCourse, setCourses } from "../Courses/reducer";
 import * as client from "../Courses/client";
+import { RootState } from "../store";
+import * as db from "../Database";
 
 type Course= {
     _id: string;
@@ -20,15 +21,15 @@ type Course= {
     description: string;
 }
 export default function Dashboard () {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
-    // const { enrollments } = db;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { courses } = useSelector((state: any) => state.coursesReducer);
+    const { courses } = useSelector((state: RootState) => state.coursesReducer);
+
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+    const { enrollments } = db;
+
     const dispatch = useDispatch();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [course, setCourse] = useState<any>({
-        _id: "0", name: "New Course", number: "New Number",
+        name: "New Course", number: "New Number",
         startDate: "2023-09-10", endDate: "2023-12-15",
         image: "images/reactjs.jpg", description: "New Description"
     });
@@ -40,30 +41,45 @@ export default function Dashboard () {
             console.error(error);
         }
     };
+    useEffect(() => {
+        // fetchCourses();
+      }, [currentUser]);
+
     const onAddNewCourse = async () => {
-        const newCourse = await client.createCourse(course);
-        dispatch(setCourses([...courses, newCourse]));
+            const courseData = {...course, _id: uuidv4() };
+            const newCourse =  await client.createCourse(courseData);
+            const updatedCourses = [...courses, newCourse];
+            dispatch(setCourses(updatedCourses));
+            setCourse({
+            _id: "0",
+            name: "New Course", 
+            number: "New Number",
+            startDate: "2023-09-10", 
+            endDate: "2023-12-15",
+            image: "images/reactjs.jpg", 
+            description: "New Description"
+            });
     };
+
     const onDeleteCourse = async (courseId: string) => {
         const status = await client.deleteCourse(courseId);
-        dispatch(setCourses(courses.filter((course: Course) => course._id !== courseId)));
+        dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
     };
+
     const onUpdateCourse = async () => {
         await client.updateCourse(course);
-        dispatch(setCourses(courses.map((c: Course) => {
-            if (c._id === course._id) {return course;}
-            else {return c};
+        dispatch(setCourses(courses.map((c) => {
+            if (c._id === course._id) {return course; }
+            else { return c; }
         })));
     };
-    useEffect(() => {
-        fetchCourses();
-      }, [currentUser]);
+    
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
             <h5>New Course 
-                <button className="btn btn-primary float-end" id="wd-add-new-course-click" onClick={onAddNewCourse}>Add</button>
-                <button className="btn btn-secondary float-end me-2" onClick={onUpdateCourse} id="wd-update-course-click">Update</button>
+                <button className="btn btn-primary float-end" id="wd-add-new-course-click" onClick={() => dispatch(addNewCourse(course))}>Add</button>
+                <button className="btn btn-secondary float-end me-2" onClick={() => dispatch(updateCourse(course))} id="wd-update-course-click">Update</button>
             </h5><br />
             <FormControl value={course.name} className="mb-2" onChange={(e) => setCourse({...course, name: e.target.value})}/>
             <FormControl as="textarea" value={course.description} rows={3} onChange={(e) => setCourse({...course, description: e.target.value})}/>
@@ -77,7 +93,7 @@ export default function Dashboard () {
                             enrollment.user === currentUser._id && 
                             enrollment.course === course._id
                     )) */}
-                    {courses.map((course: Course) => (
+                    {courses.map((course) => (
                         <Col key={course._id} className="wd-dashboard-course" style={{ width: "300px"}}>
                         <Card>
                             <Link href={`/Courses/${course._id}/Home`} 

@@ -27,7 +27,7 @@ const coursesSlice = createSlice({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ) as any;
         },
-        setCourses: (state, {payload: course}) => {
+        setCourses: (state, {payload: courses}) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             state.courses = courses as any;
         },

@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { add } from "./addReducer";
 import { FormControl } from "react-bootstrap";
+import { RootState } from "../../store";
 
 export default function AddRedux() {
   const [a, setA] = useState(12);
   const [b, setB] = useState(23);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { sum } = useSelector((state: any) => state.addReducer);
+  const { sum } = useSelector((state: RootState) => state.addReducer);
   const dispatch = useDispatch();
   return (
     <div className="w-25" id="wd-add-redux">

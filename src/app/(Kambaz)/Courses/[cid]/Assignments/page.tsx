@@ -8,10 +8,12 @@ import AssignmentControlButtons from "./AssignmentControlButtons";
 import { useParams } from "next/navigation";
 import * as db from "../../../Database";
 import { useEffect, useState } from "react";
-import { setAssignment, addAssignment, deleteAssignment, updateAssignment} from "./reducer";
+import { setAssignment, addAssignment, deleteAssignment, updateAssignment, editAssignment} from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import * as client from "../../client";
-import AssignmentEditor from "./[aid]/page";
+import AssignmentEditor from "./[aid]/editor/page";
+import { RootState } from "../../../store"
+import Link from "next/link";
 
 type Assignment = {
     _id: string;
@@ -26,8 +28,9 @@ type Assignment = {
 export default function Assignments() {
     const { cid } = useParams();
     const dispatch = useDispatch();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+
     const [ selectedAssignmentId, setSelectedAssignmentId ] = useState<string | null>(null);
     const [isEditorOpen, setIsEditorOpen] = useState(false);
 
@@ -36,26 +39,28 @@ export default function Assignments() {
         const assignments = await client.findAssignmentsForCourse(cid as string);
         dispatch(setAssignment(assignments));
     };
-    const handleDeleteAssignment = async (assignmentId: string) => {
+    const onDeleteAssignment = async (assignmentId: string) => {
         await client.deleteAssignment(assignmentId);
         dispatch(deleteAssignment(assignmentId));
     };
-    const handleCreateNew = () => {
+    const onCreateNew = () => {
         setSelectedAssignmentId('new');
         setIsEditorOpen(true);
     };
 
-    const handleEdit = (assignmentId: string) => {
+    const onEdit = (assignmentId: string) => {
         setSelectedAssignmentId(assignmentId);
         setIsEditorOpen(true);
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSaveAssignment = async (assignmentData: any) => {
+    const onSave = async (assignmentData: any) => {
+        console.log("onSave called", assignmentData);
         if (selectedAssignmentId === 'new') {
             const newAssignment = await client.createAssignmentForCourse(
                 cid as string,
                 assignmentData
             );
+            
             dispatch(addAssignment(newAssignment));
         } else {
             const updatedAssignment = await client.updateAssignment(assignmentData);
@@ -65,7 +70,7 @@ export default function Assignments() {
         setSelectedAssignmentId(null);
     };
 
-    const handleCancel = () => {
+    const onCancel = () => {
         setIsEditorOpen(false);
         setSelectedAssignmentId(null);
     };
@@ -75,13 +80,13 @@ export default function Assignments() {
 
     if(isEditorOpen) {
         return (
-            <AssignmentEditor assignmentId={selectedAssignmentId} onSave={handleSaveAssignment} onCancel={handleCancel}/>
+            <AssignmentEditor assignmentId={selectedAssignmentId} onCreateNew={onCreateNew} onSave={onSave} onCancel={onCancel}/>
     );
 
     }
     return (
         <div className="ps-4">
-            <AssignmentControls />
+            <AssignmentControls onCreateNew={onCreateNew}/>
             <br />
             <br />
             <ListGroup className="rounded-0" id="wd-assignments">
@@ -92,10 +97,24 @@ export default function Assignments() {
                         Assignments <AssignmentHeaderControlButtons />
                     </div>
                     <ListGroup className="wd-assignment-list rounded-0">
-                        {assignments.filter((assignment: Assignment) => assignment.course === cid).map((assignment: Assignment) => (
-                            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1">
-                                <BsGripVertical className="me-2 fs-3" /> {assignment.title} <AssignmentControlButtons />
+                        {assignments
+                        .filter((assignment) => assignment.course === cid)
+                        .map((assignment) =>(
+                            <ListGroupItem key={assignment._id} className="wd-assignment-list-item p-3 ps-1 d-flex justify-content-between align-items-center">
+                                <div style={{cursor: 'pointer'}} onClick={() => onEdit(assignment._id)}>
+                                    <BsGripVertical className="me-2 fs-3" />
+                                    <span className="text-primary">{assignment.title}</span>
+
+                                </div>
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                {currentUser && (currentUser as any).role === "FACULTY" && (
+                                    <AssignmentControlButtons 
+                                    assignmentId={assignment._id}
+                                    deleteAssignment={(assignmentId) => onDeleteAssignment(assignmentId)}
+                                    />
+                                )}
                             </ListGroupItem>
+
                         ))}
                     </ListGroup>
                 </ListGroupItem>

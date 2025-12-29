@@ -1,29 +1,33 @@
 "use client";
-import * as client from "../client"
 import { redirect } from "next/dist/client/components/navigation";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
+import {RootState} from "../../store";
 import { Button, FormControl } from "react-bootstrap";
+import * as client from "../client"
+
 export default function Profile() {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
  const [profile, setProfile] = useState<any>({});
  const dispatch = useDispatch();
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
- const { currentUser } = useSelector((state: any) => state.accountReducer);
+ const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+ const fetchProfile = () => {
+  if (!currentUser) return redirect("/Account/Signin");
+  setProfile(currentUser);
+};
+
  const updateProfile = async () => {
     const updatedProfile = await client.updateUser(profile);
     dispatch(setCurrentUser(updatedProfile));
- }
- const fetchProfile = () => {
-   if (!currentUser) return redirect("/Account/Signin");
-   setProfile(currentUser);
  };
+ 
  const signout = async () => {
   await client.signout();
   dispatch(setCurrentUser(null));
   redirect("/Account/Signin");
  };
+
  useEffect(() => {
    fetchProfile();
  }, []);
@@ -63,7 +67,7 @@ export default function Profile() {
          <Button onClick={updateProfile} className="btn btn-primary w-100 mb-2">
             Update
           </Button>
-         <Button onClick={signout} className="w-100 mb-2" id="wd-signout-btn">
+         <Button onClick={signout} className="wd-signout-btn btn btn-danger w-100">
            Sign out
          </Button>
        </div>

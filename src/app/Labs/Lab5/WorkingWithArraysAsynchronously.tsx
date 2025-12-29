@@ -9,7 +9,7 @@ import { FaPlusCircle } from "react-icons/fa";
 
 
 export default function WorkingWithArraysAsynchronously() {
-    const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [todos, setTodos] = useState<any[]>([]);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,8 +65,8 @@ export default function WorkingWithArraysAsynchronously() {
       <h3>Working with Arrays Asynchronously</h3>
       {errorMessage && (<div id="wd-todo-error-message" className="alert alert-danger mb-2 mt-2">{errorMessage}</div>)}
       <h4>Todos
-        <FaPlusCircle onClick={createNewTodo} className="text-success float-end fs-3" /> 
-        <FaPlusCircle onClick={postNewTodo}   className="text-primary float-end fs-3 me-3" id="wd-post-todo"   />
+        <FaPlusCircle onClick={createNewTodo} className="text-success float-end fs-3"/> 
+        <FaPlusCircle onClick={postNewTodo}   className="text-primary float-end fs-3 me-3" id="wd-post-todo"/>
       </h4>
       <ListGroup>
         {todos.map((todo) => (
@@ -76,7 +76,10 @@ export default function WorkingWithArraysAsynchronously() {
             <TiDelete onClick={() => deleteTodo(todo)} className="text-danger float-end me-2 fs-3" id="wd-delete-todo"/>
             <input type="checkbox" className="form-check-input me-2 float-start" defaultChecked={todo.completed}
              onChange={(e) => updateTodo({ ...todo, completed: e.target.checked }) }/>
-            {!todo.editing ? ( todo.title ) : (
+            {!todo.editing ? (
+              <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
+              {todo.title} </span>
+            ) : (
                 <FormControl className="w-50 float-start" defaultValue={todo.title}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -88,8 +91,7 @@ export default function WorkingWithArraysAsynchronously() {
                   }
                 />
               )}
-            {/* <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
-              {todo.title} </span> */}
+            
           </ListGroupItem>
         ))}
       </ListGroup> <hr />

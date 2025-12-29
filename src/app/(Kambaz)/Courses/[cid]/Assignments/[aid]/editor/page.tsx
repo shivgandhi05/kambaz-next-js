@@ -5,14 +5,28 @@ import { FaRProject } from "react-icons/fa6";
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
+import { RootState} from "../../../../../store"
+import * as client from "../../client";
+
+type AssignmentEditorProps = {
+    assignmentId: string | null;
+    onCreateNew: () => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function AssignmentEditor({ assignmentId, onSave, onCancel}: any) {
-    const { cid } = useParams();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+    onSave: (assignmentData: any) => void;
+    onCancel: () => void;
+}
+
+
+export default function AssignmentEditor({ assignmentId, onCreateNew, onSave, onCancel}: AssignmentEditorProps) {
+    const { cid, aid } = useParams();
+    const dispatch = useDispatch();
+
+    const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+
     const [submissionType, setSubmissionType] = useState("ONLINE");
+
     const [assignment, setAssignment] = useState({
         _id: '',
         title: 'New Assignment',
@@ -48,29 +62,69 @@ The Kanbas application should include a link to navigate back to the landing pag
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const existingAssignment = assignments.find((a: any) => a._id === assignmentId);
             if (existingAssignment) {
-                setAssignment(existingAssignment);
-                setSubmissionType(existingAssignment.submissionType || 'ONLINE');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                setAssignment({...existingAssignment} as any);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                setSubmissionType((existingAssignment as any).submissionType || 'ONLINE');
             }
+        } else if (assignmentId === 'new') {
+            setAssignment({
+                _id: '',
+                title: 'New Assignment',
+                description: `The assignment is available online
+        Submit a link to the landing page of your Web application running on Netlify.
+        The landing page should include the following:
+        
+        - Your full name and section
+        - Links to each of the lab assignments
+        - Link to the Kanbas application
+        - Links to all relevant source code repositories
+        
+        The Kanbas application should include a link to navigate back to the landing page.`,
+                points: 100,
+                assignmentGroup: 'ASSIGNMENTS',
+                displayGradeAs: 'PERCENTAGE',
+                submissionType: 'ONLINE',
+                onlineEntryOptions: {
+                    textEntry: false,
+                    websiteUrl: false,
+                    mediaRecordings: false,
+                    studentAnnotation: false,
+                    fileUploads: false
+                },
+                assignTo: 'Everyone',
+                dueDate: '2024-05-13',
+                availableFrom: '2024-05-06',
+                availableUntil: '2024-05-20',
+                course: cid as string,
+            });
+            setSubmissionType('ONLINE');
         }
-    }, [assignmentId, assignments]);
+    }, [assignmentId, assignments, cid]);
+
+    const handleSave = () => {
+        onSave(assignment);    
+    };
+    
+    
     return (
 
         
         <div id="wd-assignments-editor" className="ps-5">
             <Form style={{width: 600}}>
                 <FormLabel>Assignment Name</FormLabel>
-                <FormControl type="text" id="wd-assignment-name" defaultValue={assignment.title} style={{width:370}} onChange={(e) => setAssignment({...assignment, title : e.target.value})}  />
+                <FormControl type="text" id="wd-assignment-name" value={assignment.title} style={{width:370}} onChange={(e) => setAssignment({...assignment, title : e.target.value})}  />
                 <FormControl as="textarea" 
                 rows={10} 
                 id="wd-assignment-instructions" 
-                defaultValue={assignment.description} onChange={(e) => setAssignment({...assignment, description : e.target.value})} />
+                value={assignment.description} onChange={(e) => setAssignment({...assignment, description : e.target.value})} />
             </Form>
     
             {/* points */}
             <div id="wd-points">
                 <Row className="mb-3" controlid="points">
                     <FormLabel column sm={2}>Points</FormLabel>
-                    <FormControl type="number" id="wd-points" defaultValue={assignment.points} onChange={(e) => setAssignment({...assignment, points : parseInt(e.target.value)})} />
+                    <FormControl type="number" id="wd-points" value={assignment.points} onChange={(e) => setAssignment({...assignment, points : parseInt(e.target.value)})} />
                 </Row> 
             </div>
 
@@ -91,7 +145,7 @@ The Kanbas application should include a link to navigate back to the landing pag
             <div id="wd-display-grade-as">
                 <Row className="mb-3" controlid="display-grade-as">
                     <FormLabel column sm={2}>Display Grade As</FormLabel>
-                    <FormSelect id="wd-display-grade-as" style={{width:370}} defaultValue={assignment.displayGradeAs} onChange={(e) => setAssignment({...assignment, displayGradeAs : e.target.value})}>
+                    <FormSelect id="wd-display-grade-as" style={{width:370}} value={assignment.displayGradeAs} onChange={(e) => setAssignment({...assignment, displayGradeAs : e.target.value})}>
                         <option value="PERCENTAGE">Percentage</option>
                         <option value="LETTER">Letter</option>
                         <option value="POINTS">Points</option>
@@ -147,7 +201,7 @@ The Kanbas application should include a link to navigate back to the landing pag
             <div id="wd-assign-to">
                 <Row className="mb-3" controlid="assign-to">
                     <FormLabel column sm={2}>Assign To</FormLabel>
-                    <FormSelect id="wd-group" style={{width:370}} defaultValue={assignment.assignTo} onChange={(e) => setAssignment({ ...assignment, assignTo: e.target.value })}>
+                    <FormSelect id="wd-group" style={{width:370}} value={assignment.assignTo} onChange={(e) => setAssignment({ ...assignment, assignTo: e.target.value })}>
                         <option value="Everyone">Everyone</option>
                     </FormSelect>
                 </Row>
@@ -158,7 +212,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Row className="mb-3" controlid="due-dates">
                     <FormLabel column sm={2}>Due Date</FormLabel>
                     <Col sm={7}>
-                        <FormControl type="date" defaultValue={assignment.dueDate} id="wd-due-date" style={{width:350}} onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })} />
+                        <FormControl type="date" value={assignment.dueDate} id="wd-due-date" style={{width:350}} onChange={(e) => setAssignment({ ...assignment, dueDate: e.target.value })} />
                     </Col>
                 </Row>
             </div>
@@ -192,9 +246,9 @@ The Kanbas application should include a link to navigate back to the landing pag
             <hr style={{margin: "20px 0"}} />
             <div className="justify-content-end d-flex">
                 {/* cancel button */}
-                <Link id ="wd-cancel-btn" href="/Courses/1234/Assignments" className="btn btn-lg btn-secondary mb-2 me-3">Cancel</Link>
+                <Button id ="wd-cancel-btn"  className="btn btn-lg btn-secondary mb-2 me-3" onClick={onCancel}>Cancel</Button>
                 {/* save button */}
-                <Link id="wd-save-btn" href="/Courses/1234/Assignments" className="btn btn-lg btn-danger mb-2 me-3">Save</Link>
+                <Button id="wd-save-btn" className="btn btn-lg btn-danger mb-2 me-3" onClick={handleSave}>Save</Button>
             </div>
         </div>
     )

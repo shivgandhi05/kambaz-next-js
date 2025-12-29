@@ -10,6 +10,7 @@ import LessonControlButtons from './LessonControlButtons';
 import { v4 as uuidv4} from "uuid";
 import { addModule, editModule, updateModule, deleteModule, setModules } from './reducer';
 import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../store'
 import * as client from "../../client";
 type Lesson = {
     _id: string;
@@ -24,10 +25,10 @@ type Module = {
 };
 export default function Modules() {
     const { cid } = useParams();
-    const [moduleName, setModuleName] = useState("");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { modules } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
+    const [moduleName, setModuleName] = useState("");
+    const { modules } = useSelector((state: RootState) => state.modulesReducer);
+    
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onUpdateModule = async (module: any) => {
         await client.updateModule(module);
@@ -42,13 +43,17 @@ export default function Modules() {
     const onCreateModuleForCourse = async () => {
         if (!cid) return;
         const newModule = { name: moduleName, course: cid as string};
-        const modules = await client.createModuleForCourse(cid as string, newModule);
-        dispatch(setModules([...modules, module]));
+        const mod = await client.createModuleForCourse(cid as string, newModule);
+        dispatch(setModules([...modules, mod]));
     };
     const onRemoveModule = async (moduleId: string) => {
-        await client.deleteModule(moduleId);
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+        console.log("Deleing module", moduleId);
+        try{
+        await client.deleteModule(cid as string, moduleId);
+        dispatch(setModules(modules.filter((m: Module) => m._id !== moduleId)));
+    } catch (error) {
+        console.error("Failed to delete module:", error);
+    }
     };
     useEffect(() => {
         fetchModules();

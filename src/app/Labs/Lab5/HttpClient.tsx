@@ -3,15 +3,16 @@ import * as client from "./client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+// const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 
 export default function HttpClient() {
     const [welcomeOnClick, setWelcomeOnClick] = useState("");
     const [welcomeOnLoad, setWelcomeOnLoad] = useState("");
+
     const fetchWelcomeOnClick = async () => {
         const message = await client.fetchWelcomeMessage();
         setWelcomeOnClick(message);
-    };
+    }
     const fetchWelcomeOnLoad = async () => {
         const welcome = await client.fetchWelcomeMessage();
         setWelcomeOnLoad(welcome);
