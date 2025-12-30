@@ -24,9 +24,16 @@ export default function Dashboard () {
     const { courses } = useSelector((state: RootState) => state.coursesReducer);
 
     const { currentUser } = useSelector((state: RootState) => state.accountReducer);
-    const { enrollments } = db;
+
+    const { enrollments } = useSelector((state: RootState) => state.enrollmentsReducer);
 
     const dispatch = useDispatch();
+
+
+    const [showAllCourses, setShowAllCourses] = useState(false);
+
+
+    
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [course, setCourse] = useState<any>({
         name: "New Course", number: "New Number",
