@@ -79,7 +79,7 @@ export default function Modules() {
                                                 onUpdateModule({...module, editing: false});
                                             }
                                         }}
-                                        defaultValue={module.name}/>
+                                        value={module.name}/>
                             )}
                              <ModuleControlButtons moduleId={module._id} 
                              deleteModule={(moduleId) => onRemoveModule(moduleId)} 

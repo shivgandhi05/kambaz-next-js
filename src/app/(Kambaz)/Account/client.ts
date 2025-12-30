@@ -12,7 +12,8 @@ export const signin = async (credentials: any) => {
 export const profile = async () => {
     const response = await axiosWithCredentials.post(`${USERS_API}/profile`);
     return response.data;
-}
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const signup = async (user: any ) => {
   const response = await axiosWithCredentials.post(`${USERS_API}/signup`, user);

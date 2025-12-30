@@ -29,7 +29,7 @@ const coursesSlice = createSlice({
         },
         setCourses: (state, {payload: courses}) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            state.courses = courses as any;
+            state.courses = courses as any ;
         },
     },
 });

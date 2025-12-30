@@ -6,13 +6,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 export default function AccountNavigation() {
-    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer) as any ;
+    
     const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
     const pathname = usePathname();
     return (
         <Nav variant="pills">
             {links.map((link) =>(
                 <NavItem key={link}>
+                   {currentUser?.role === 'ADMIN' && (
+                        <NavLink as={Link} href={`/Account/Users`} active={pathname.endsWith('Users')}>
+                            Users
+                        </NavLink>
+                    )}
                     <NavLink as={Link} href={link} active={pathname.endsWith(link)}>
                         {link} </NavLink></NavItem>
             ))}

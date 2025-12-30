@@ -41,7 +41,10 @@ export default function Dashboard () {
         image: "images/reactjs.jpg", description: "New Description"
     });
     const fetchCourses = async () => {
+        console.log("=== FETCH COURSES START ===");
+        console.log("Current user:", currentUser);
         try {
+            
             const courses = await client.findMyCourses();
             dispatch(setCourses(courses));
         } catch (error) {
@@ -49,14 +52,22 @@ export default function Dashboard () {
         }
     };
     useEffect(() => {
-        // fetchCourses();
+        fetchCourses();
       }, [currentUser]);
 
     const onAddNewCourse = async () => {
+
+     
+    
+          try {
             const courseData = {...course, _id: uuidv4() };
+
             const newCourse =  await client.createCourse(courseData);
+           
             const updatedCourses = [...courses, newCourse];
+
             dispatch(setCourses(updatedCourses));
+        
             setCourse({
             _id: "0",
             name: "New Course", 
@@ -66,6 +77,10 @@ export default function Dashboard () {
             image: "images/reactjs.jpg", 
             description: "New Description"
             });
+           
+        } catch (error) {
+            console.error("=== ADD COURSE ERROR ===", error);
+        }
     };
 
     const onDeleteCourse = async (courseId: string) => {
@@ -85,8 +100,8 @@ export default function Dashboard () {
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
             <h5>New Course 
-                <button className="btn btn-primary float-end" id="wd-add-new-course-click" onClick={() => dispatch(addNewCourse(course))}>Add</button>
-                <button className="btn btn-secondary float-end me-2" onClick={() => dispatch(updateCourse(course))} id="wd-update-course-click">Update</button>
+                <button className="btn btn-primary float-end" id="wd-add-new-course-click" onClick={onAddNewCourse}>Add</button>
+                <button className="btn btn-secondary float-end me-2" onClick={onUpdateCourse} id="wd-update-course-click">Update</button>
             </h5><br />
             <FormControl value={course.name} className="mb-2" onChange={(e) => setCourse({...course, name: e.target.value})}/>
             <FormControl as="textarea" value={course.description} rows={3} onChange={(e) => setCourse({...course, description: e.target.value})}/>
