@@ -30,9 +30,6 @@ export default function Dashboard () {
     const dispatch = useDispatch();
 
 
-    const [showAllCourses, setShowAllCourses] = useState(false);
-
-
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [course, setCourse] = useState<any>({
@@ -41,8 +38,6 @@ export default function Dashboard () {
         image: "images/reactjs.jpg", description: "New Description"
     });
     const fetchCourses = async () => {
-        console.log("=== FETCH COURSES START ===");
-        console.log("Current user:", currentUser);
         try {
             
             const courses = await client.findMyCourses();
@@ -52,13 +47,17 @@ export default function Dashboard () {
         }
     };
     useEffect(() => {
+        console.log("=== CURRENT USER DEBUG ===");
+        console.log("Current user:", currentUser);
+        console.log("Current user stringified:", JSON.stringify(currentUser));
+        console.log("=========================");
+        if (currentUser) {
         fetchCourses();
+        }
       }, [currentUser]);
 
     const onAddNewCourse = async () => {
 
-     
-    
           try {
             const courseData = {...course, _id: uuidv4() };
 
