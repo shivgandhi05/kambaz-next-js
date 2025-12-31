@@ -1,3 +1,4 @@
+"use client";
 import { use, useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
