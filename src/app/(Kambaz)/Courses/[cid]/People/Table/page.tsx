@@ -4,13 +4,27 @@ import { useParams } from "next/navigation";
 import * as db from "../../../../Database";
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
+import PeopleDetails from "../Details/page";
+import Link from "next/link";
 
-export default function PeopleTable() {
-  const { cid } = useParams(); // get course ID from URL
-  const enrollments = db.enrollments; // each enrollment now includes a full user object
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function PeopleTable({users = [], fetchUsers}: {users?: any[]; fetchUsers: () => void}) {
+  // const { cid } = useParams(); 
+  // const {users, enrollments } = db; 
+
+  const [showDetails, setShowDetails] = React.useState<boolean>(false);
+  const [showUserId, setShowUserId] = React.useState<string | null>(null);
 
   return (
     <div id="wd-people-table" className="p-5">
+      {showDetails && (
+        <PeopleDetails
+          uid={showUserId}
+          onClose={() => {
+            setShowDetails(false);
+            fetchUsers();
+          }}/>
+      )}
       <Table striped hover responsive>
         <thead>
           <tr>
@@ -23,27 +37,33 @@ export default function PeopleTable() {
           </tr>
         </thead>
         <tbody>
-          {enrollments
-            .filter((enrollment) => enrollment.course === cid)
-            .map((enrollment) => (
-              <tr key={enrollment._id}>
+          {users
+            // .filter((enrollment) => enrollment.course === cid)
+            .map((user) => (
+              <tr key={user._id}>
                 <td className="wd-full-name text-nowrap">
+                  <span className="text-decoration-none"
+                  onClick={() => {
+                    setShowDetails(true);
+                    setShowUserId(user._id);
+                  }}>
                   <FaUserCircle className="me-2 fs-1 text-secondary" />
                   <span className="wd-first-name">
-                    {enrollment.user.firstName}
+                    {user.firstName}
                   </span>{" "}
                   <span className="wd-last-name">
-                    {enrollment.user.lastName}
+                    {user.lastName}
+                  </span>
                   </span>
                 </td>
-                <td className="wd-login-id">{enrollment.user.loginId}</td>
-                <td className="wd-section">{enrollment.user.section}</td>
-                <td className="wd-role">{enrollment.user.role}</td>
+                <td className="wd-login-id">{user.loginId}</td>
+                <td className="wd-section">{user.section}</td>
+                <td className="wd-role">{user.role}</td>
                 <td className="wd-last-activity">
-                  {enrollment.user.lastActivity}
+                  {user.lastActivity}
                 </td>
                 <td className="wd-total-activity">
-                  {enrollment.user.totalActivity}
+                  {user.totalActivity}
                 </td>
               </tr>
             ))}

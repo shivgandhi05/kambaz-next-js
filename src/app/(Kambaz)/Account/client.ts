@@ -31,9 +31,36 @@ export const updateUser = async (user: any) => {
   return response.data;
 };
 export const findAllUsers = async () => {
-    const response = await axiosWithCredentials.get(USERS_API);
+    const response = await axiosWithCredentials.get(`${USERS_API}`);
     return response.data;
 };
+
+export const findUsersByRole = async (role: string) => {
+  const response = await axios.get(`${USERS_API}?role=${role}`);
+  return response.data;
+};
+
+export const findUsersByPartialName = async (name: string) => {
+  const response = await axios.get(`${USERS_API}?name=${name}`);
+  return response.data;
+};
+
+export const findUserById = async (id: string) => {
+  const response = await axios.get(`${USERS_API}/${id}`);
+  return response.data;
+};
+
+export const deleteUser = async (userId: string ) => {
+  const response = await axiosWithCredentials.delete(`${USERS_API}/${userId}`);
+  return response.data;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createUser = async (user: any) => {
+  const response = await axiosWithCredentials.post(`${USERS_API}`, user);
+  return response.data;
+}
+
   
   
 
