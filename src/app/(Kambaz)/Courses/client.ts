@@ -56,8 +56,8 @@ export const deleteModule = async (courseId: string, moduleId: string) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const updateModule = async (module: any) => {
-    const { data } = await axiosWithCredentials.put(`${MODULES_API}/${module._id}`, module);
+export const updateModule = async (courseId: string, module: any) => {
+    const { data } = await axiosWithCredentials.put(`${COURSES_API}/${courseId}/modules/${module._id}`, module);
     return data;
 };
 

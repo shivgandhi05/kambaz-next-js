@@ -57,59 +57,90 @@ The Kanbas application should include a link to navigate back to the landing pag
         availableUntil: '2024-05-20',
         course: cid as string,
     });
+
+    const formatDateForInput = (dateString: string) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    
     useEffect(() => {
-        if (assignmentId && assignmentId !== 'new') {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const existingAssignment = assignments.find((a: any) => a._id === assignmentId);
-            if (existingAssignment) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                setAssignment({...existingAssignment} as any);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                setSubmissionType((existingAssignment as any).submissionType || 'ONLINE');
+        const fetchAssignment = async () => {
+            if (assignmentId && assignmentId !== 'new') {
+                try {
+                    // Fetch from database instead of Redux store
+                    const fetchedAssignment = await client.findAssignmentById(assignmentId);
+                    
+                    // Format dates for input fields
+                    if (fetchedAssignment.dueDate) {
+                        fetchedAssignment.dueDate = formatDateForInput(fetchedAssignment.dueDate);
+                    }
+                    if (fetchedAssignment.availableFrom) {
+                        fetchedAssignment.availableFrom = formatDateForInput(fetchedAssignment.availableFrom);
+                    }
+                    if (fetchedAssignment.availableUntil) {
+                        fetchedAssignment.availableUntil = formatDateForInput(fetchedAssignment.availableUntil);
+                    }
+                    
+                    setAssignment(fetchedAssignment);
+                    setSubmissionType(fetchedAssignment.submissionType || 'ONLINE');
+                } catch (error) {
+                    console.error("Error fetching assignment:", error);
+                }
+            } else if (assignmentId === 'new') {
+                // Reset to default for new assignment
+                setAssignment({
+                    _id: '',
+                    title: 'New Assignment',
+                    description: `The assignment is available online
+Submit a link to the landing page of your Web application running on Netlify.
+The landing page should include the following:
+
+- Your full name and section
+- Links to each of the lab assignments
+- Link to the Kanbas application
+- Links to all relevant source code repositories
+
+The Kanbas application should include a link to navigate back to the landing page.`,
+                    points: 100,
+                    assignmentGroup: 'ASSIGNMENTS',
+                    displayGradeAs: 'PERCENTAGE',
+                    submissionType: 'ONLINE',
+                    onlineEntryOptions: {
+                        textEntry: false,
+                        websiteUrl: false,
+                        mediaRecordings: false,
+                        studentAnnotation: false,
+                        fileUploads: false
+                    },
+                    assignTo: 'Everyone',
+                    dueDate: '2024-05-13',
+                    availableFrom: '2024-05-06',
+                    availableUntil: '2024-05-20',
+                    course: cid as string,
+                });
+                setSubmissionType('ONLINE');
             }
-        } else if (assignmentId === 'new') {
-            setAssignment({
-                _id: '',
-                title: 'New Assignment',
-                description: `The assignment is available online
-        Submit a link to the landing page of your Web application running on Netlify.
-        The landing page should include the following:
-        
-        - Your full name and section
-        - Links to each of the lab assignments
-        - Link to the Kanbas application
-        - Links to all relevant source code repositories
-        
-        The Kanbas application should include a link to navigate back to the landing page.`,
-                points: 100,
-                assignmentGroup: 'ASSIGNMENTS',
-                displayGradeAs: 'PERCENTAGE',
-                submissionType: 'ONLINE',
-                onlineEntryOptions: {
-                    textEntry: false,
-                    websiteUrl: false,
-                    mediaRecordings: false,
-                    studentAnnotation: false,
-                    fileUploads: false
-                },
-                assignTo: 'Everyone',
-                dueDate: '2024-05-13',
-                availableFrom: '2024-05-06',
-                availableUntil: '2024-05-20',
-                course: cid as string,
-            });
-            setSubmissionType('ONLINE');
-        }
-    }, [assignmentId, assignments, cid]);
+        };
+
+        fetchAssignment();
+    }, [assignmentId, cid]);
 
     const handleSave = () => {
-        onSave(assignment);    
+        onSave(assignment);
     };
+
+    const handleSubmissionTypeChange = (value: string) => {
+        setSubmissionType(value);
+        setAssignment({ ...assignment, submissionType: value });
+    };
+
     
     
     return (
-
-        
         <div id="wd-assignments-editor" className="ps-5">
             <Form style={{width: 600}}>
                 <FormLabel>Assignment Name</FormLabel>
@@ -158,7 +189,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <Row className="mb-3" controlid="submission-type">
                 <FormLabel column sm={2}>Submission Type</FormLabel>
                 <Col sm={7}>
-                    <FormSelect value={submissionType} onChange={(e) => setAssignment({...assignment, submissionType : e.target.value})} style={{width:350}}>
+                    <FormSelect value={submissionType} onChange={(e) => handleSubmissionTypeChange(e.target.value)} style={{width:350}}>
                         <option value="ONLINE">Online</option>
                         <option value="PAPER">Paper</option>
                         <option value="NO_SUBMISSION">No Submission</option>
