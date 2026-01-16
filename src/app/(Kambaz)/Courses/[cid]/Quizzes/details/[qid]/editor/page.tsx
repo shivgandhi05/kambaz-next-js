@@ -7,11 +7,19 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { setQuizzes, addQuiz, deleteQuiz, updateQuiz } from "../../../reducer";
+import { setQuiz, addQuiz, deleteQuiz, updateQuiz } from "../../../reducer";
 import * as client from "../../../../../client";
 
+type QuizEditorProps = {
+    quizId: string | null;
+    onCreateNew: () => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSave: (quizData : any) => void;
+    onCancel: () => void;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function QuizEditor({ quizId, onSave, onCancel}: any) {
+export default function QuizEditor({ quizId, onCreateNew, onSave, onCancel}:QuizEditorProps ) {
 
     const { cid } = useParams();
 
@@ -32,8 +40,11 @@ export default function QuizEditor({ quizId, onSave, onCancel}: any) {
         _id: '',
         title: 'New Quiz',
         description: 'Quiz Description',
-        quizType: 'GRADED_QUIZ',
         points: 0,
+        dueDate: '2024-05-13',
+        quizType: 'GRADED_QUIZ',
+        availableFrom: '2024-05-06',
+        availableUntil: '2024-05-20',
         assignmentGroup: 'QUIZZES',
         shuffleAnswers: true,
         timeLimit: 20,
@@ -43,22 +54,73 @@ export default function QuizEditor({ quizId, onSave, onCancel}: any) {
         oneQuestionAtATime: true,
         webcamRequired: false,
         lockQuestionsAfterAnswering: false,
-        dueDate: '2024-05-13',
-        availableFrom: '2024-05-06',
-        availableUntil: '2024-05-20',
+        
+       
         course: cid as string,
         published: false
     });
 
+    const formatDateForInput = (dateString: string) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     useEffect(() => {
-        if (quizId && quizId !== 'new') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const existingQuiz = quizzes.find((q: any) => q._id === quizId);
-            if (existingQuiz) {
-                setQuiz(existingQuiz);
+        const fetchQuiz = async () => {
+            if (quizId && quizId !== 'new') {
+                try {
+                    const fetchedQuiz = await client.findQuizById(quizId);
+
+                    if (fetchedQuiz.dueDate) {
+                        fetchedQuiz.dueDate = formatDateForInput(fetchedQuiz.dueDate);
+                    }
+                    if (fetchedQuiz.availableFrom) {
+                        fetchedQuiz.availableFrom = formatDateForInput(fetchedQuiz.availableFrom);
+                    }
+                    if (fetchedQuiz.availableUntil) {
+                        fetchedQuiz.availableUntil = formatDateForInput(fetchedQuiz.availableUntil);
+                    }
+                    setQuiz(fetchedQuiz);
+
+                } catch (error) {
+                    console.error("Error fetching quiz", error);
+                }
+            } else if (quizId === 'new') {
+                setQuiz({
+                    _id: '',
+                    title: 'New Quiz',
+                    description: 'Quiz Description',
+                    points: 0,
+                    dueDate: '',
+                    quizType: 'GRADED_QUIZ',
+                    availableFrom: '',
+                    availableUntil: '',
+                    assignmentGroup: 'QUIZZES',
+                    shuffleAnswers: true,
+                    timeLimit: 20,
+                    multipleAttempts: false,
+                    showCorrectAnswers: 'IMMEDIATELY',
+                    accessCode: '',
+                    oneQuestionAtATime: true,
+                    webcamRequired: false,
+                    lockQuestionsAfterAnswering: false,
+                    
+                   
+                    course: cid as string,
+                    published: false
+                });
             }
-        }
+        };
+        fetchQuiz();
     }, [quizId, quizzes]);
+
+    const handleSave = () => {
+        onSave(quiz);
+    };
 
 
     
@@ -91,11 +153,11 @@ export default function QuizEditor({ quizId, onSave, onCancel}: any) {
             <div id= "wd-quiz-editor" className="mb-4">
             <Form style={{width: 600}}>
                 <FormLabel>Quiz Name</FormLabel>
-                <FormControl type="text" id="wd-assignment-name" defaultValue={quiz.title} style={{width:370}} onChange={(e) => setQuizzes({...quiz, title : e.target.value})}  />
+                <FormControl type="text" id="wd-assignment-name" value={quiz.title} style={{width:370}} onChange={(e) => setQuiz({...quiz, title : e.target.value})}  />
                 <FormControl as="textarea" 
                 rows={10} 
                 id="wd-assignment-instructions" 
-                defaultValue={quiz.description} onChange={(e) => setQuiz({...quiz, description : e.target.value})} />
+                value={quiz.description} onChange={(e) => setQuiz({...quiz, description : e.target.value})} />
             </Form>
             </div>
 
@@ -115,7 +177,7 @@ export default function QuizEditor({ quizId, onSave, onCancel}: any) {
             <div id="wd-points">
                 <Row className="mb-3" controlid="points">
                     <FormLabel column sm={2}>Points</FormLabel>
-                    <FormControl type="number" id="wd-points" defaultValue={quiz.points} onChange={(e) => setQuiz({...quiz, points : parseInt(e.target.value)})} />
+                    <FormControl type="number" id="wd-points" value={quiz.points} onChange={(e) => setQuiz({...quiz, points : parseInt(e.target.value)})} />
                 </Row> 
             </div>
 
@@ -332,10 +394,11 @@ export default function QuizEditor({ quizId, onSave, onCancel}: any) {
             <hr className="my-5 border-gray-300" />
             <div className="flex justify-end gap-3 mb-5">
                  {/* cancel button */}
-                 <Link id ="wd-cancel-btn" href={`/Courses/${cid}/Quizzes`} className="btn btn-lg btn-secondary mb-2 me-3">Cancel</Link>
+                 <Button id ="wd-cancel-btn" className="btn btn-lg btn-secondary mb-2 me-3" onClick={onCancel}>Cancel</Button>
                 {/* save button */}
-                <Link id="wd-save-btn" href={`/Courses/${cid}/Quizzes`} className="btn btn-lg btn-danger mb-2 me-3">Save</Link>
-                <Link id="wd-publish-btn" href={`/Courses/${cid}/Quizzes`} className="btn btn-lg btn-primary mb-2 me-3">Save & Publish</Link>
+                <Button id="wd-save-btn" className="btn btn-lg btn-danger mb-2 me-3" onClick={handleSave}>Save</Button>
+               
+                {/* <Button id="wd-publish-btn" onClick={onSave} className="btn btn-lg btn-primary mb-2 me-3">Save & Publish</Button> */}
             </div>
                 </div>
             )}

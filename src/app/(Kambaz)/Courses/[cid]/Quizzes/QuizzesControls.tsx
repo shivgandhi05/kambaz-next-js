@@ -10,7 +10,11 @@ import { v4 as uuidv4 } from "uuid";
 import { addQuiz } from "./reducer";
 import * as client from "../../client";
 
-export default function QuizControlButtons() {
+type QuizControlButtonsProps = {
+    onCreateNew: () => void;
+}
+
+export default function QuizControlButtons({onCreateNew}: QuizControlButtonsProps) {
     const { cid } = useParams();
     const dispatch = useDispatch();
     const qid = uuidv4();

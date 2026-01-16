@@ -3,14 +3,14 @@ import { v4 as uuidv4 } from "uuid";
 import { quizzes } from "../../../Database";
 
 const initialState = {
-    quizzes: quizzes,
+    quizzes: [],
 };
 
 const quizzesSlice = createSlice({
     name: "quizzes",
     initialState,
     reducers: {
-        setQuizzes: (state, action) => {
+        setQuiz: (state, action) => {
             state.quizzes = action.payload;
         },
         addQuiz: (state, { payload: quiz }) => {
@@ -35,5 +35,5 @@ const quizzesSlice = createSlice({
     },
 });
 
-export const { addQuiz, deleteQuiz, updateQuiz, setQuizzes } = quizzesSlice.actions;
+export const { addQuiz, deleteQuiz, updateQuiz, setQuiz } = quizzesSlice.actions;
 export default quizzesSlice.reducer;

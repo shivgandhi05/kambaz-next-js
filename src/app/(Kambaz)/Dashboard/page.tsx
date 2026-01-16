@@ -7,6 +7,7 @@ import { Card, CardBody, CardImg, CardTitle, CardText } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewCourse, deleteCourse, updateCourse, setCourses } from "../Courses/reducer";
+import { setEnrollments, enrollInCourse, unenrollFromCourse } from "../Enrollments/reducer";
 import * as client from "../Courses/client";
 import { RootState } from "../store";
 import * as db from "../Database";
@@ -33,19 +34,24 @@ export default function Dashboard () {
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [course, setCourse] = useState<any>({
-        name: "New Course", number: "New Number",
-        startDate: "2023-09-10", endDate: "2023-12-15",
-        image: "images/reactjs.jpg", description: "New Description"
+        name: "New Course",
+        number: "New Number",
+        startDate: "2023-09-10",
+        endDate: "2023-12-15",
+        image: "images/reactjs.jpg",
+        description: "New Description"
     });
+    
     const fetchCourses = async () => {
         try {
-            
             const courses = await client.findMyCourses();
             dispatch(setCourses(courses));
         } catch (error) {
             console.error(error);
         }
     };
+
+
     useEffect(() => {
         console.log("=== CURRENT USER DEBUG ===");
         console.log("Current user:", currentUser);
@@ -83,7 +89,7 @@ export default function Dashboard () {
     };
 
     const onDeleteCourse = async (courseId: string) => {
-        const status = await client.deleteCourse(courseId);
+         await client.deleteCourse(courseId);
         dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
     };
 
