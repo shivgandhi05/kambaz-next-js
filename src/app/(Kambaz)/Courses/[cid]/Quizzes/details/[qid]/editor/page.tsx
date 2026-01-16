@@ -394,11 +394,16 @@ export default function QuizEditor({ quizId, onCreateNew, onSave, onCancel}:Quiz
             <hr className="my-5 border-gray-300" />
             <div className="flex justify-end gap-3 mb-5">
                  {/* cancel button */}
+                 <Link href={`/Courses/${cid}/Quizzes`}>
                  <Button id ="wd-cancel-btn" className="btn btn-lg btn-secondary mb-2 me-3" onClick={onCancel}>Cancel</Button>
+                 </Link>
                 {/* save button */}
+                <Link href={`/Courses/${cid}/Quizzes`}>
                 <Button id="wd-save-btn" className="btn btn-lg btn-danger mb-2 me-3" onClick={handleSave}>Save</Button>
-               
-                {/* <Button id="wd-publish-btn" onClick={onSave} className="btn btn-lg btn-primary mb-2 me-3">Save & Publish</Button> */}
+                </Link>
+                <Link href={`/Courses/${cid}/Quizzes`}>
+                <Button id="wd-publish-btn" onClick={onSave} className="btn btn-lg btn-primary mb-2 me-3">Save & Publish</Button>
+                </Link>
             </div>
                 </div>
             )}
